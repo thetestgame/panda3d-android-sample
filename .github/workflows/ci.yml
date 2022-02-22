@@ -35,7 +35,7 @@ jobs:
     - name: Download Panda3D [android_x86]
       uses: wei/wget@v1
       with:
-        args: -O android/https://rdb.name/panda3d-1.11.0-cp38-cp38-android_x86.whl https://rdb.name/panda3d-1.11.0-cp38-cp38-android_x86.whl
+        args: -O android/panda3d-1.11.0-cp38-cp38-android_x86.whl https://rdb.name/panda3d-1.11.0-cp38-cp38-android_x86.whl
 
     - name: Compile Sample Application
       run: |
