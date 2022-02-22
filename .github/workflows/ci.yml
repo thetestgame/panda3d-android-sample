@@ -37,6 +37,10 @@ jobs:
       with:
         args: -O android/panda3d-1.11.0-cp38-cp38-android_x86.whl https://rdb.name/panda3d-1.11.0-cp38-cp38-android_x86.whl
 
+    - name: Install Compiler Tools
+      run: |
+        pip install google
+
     - name: Compile Sample Application
       run: |
         python setup.py bdist_apps
