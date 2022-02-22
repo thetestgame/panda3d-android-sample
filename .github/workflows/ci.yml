@@ -1,0 +1,22 @@
+name: Android Sample CI
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: wget (Panda3D)
+      uses: wei/wget@v1
+      with:
+        args: -O panda3d.whl https://buildbot.panda3d.org/downloads/68f0931f43284345893a90d5bba9ba5df8aa53bb/panda3d-1.11.0.dev2480-cp38-cp38-manylinux1_x86_64.whl
+    - name: Install Panda3D
+      run: |
+        pip install panda3d.whl
