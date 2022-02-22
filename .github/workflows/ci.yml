@@ -40,3 +40,15 @@ jobs:
     - name: Compile Sample Application
       run: |
         python setup.py bdist_apps
+
+    - name: Upload artifacts (Build)
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build Directory
+        path: build/*
+
+    - name: Upload artifacts (dist)
+      uses: actions/upload-artifact@v2
+      with:
+        name: Dist Directory
+        path: dist/*
