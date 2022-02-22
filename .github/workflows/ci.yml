@@ -40,6 +40,7 @@ jobs:
     - name: Install Compiler Tools
       run: |
         pip install google
+        pip install protobuf
 
     - name: Compile Sample Application
       run: |
