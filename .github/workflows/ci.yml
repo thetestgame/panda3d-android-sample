@@ -42,11 +42,6 @@ jobs:
         pip install google
         pip install protobuf
 
-    - name: Generate Certificates
-      run: |
-        openssl genpkey -algorithm RSA -aes256 -out private.pem
-        openssl req -new -x509 -sha256 -days 365 -key private.pem > cert.pem
-
     - name: Compile Sample Application
       run: |
         python setup.py bdist_apps
