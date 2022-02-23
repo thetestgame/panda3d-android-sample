@@ -55,8 +55,7 @@ setup(
         'bdist_apps': {
             'signing_certificate': 'cert.pem',
             'signing_private_key': 'private.pem',
-            # optional: Panda will otherwise ask passphrase on command-line
-            #'signing_passphrase': 'panda3d_is_cool',
+            'signing_passphrase': 'panda3d_is_cool',
         },
     },
     # Choosing a classifier in the Games category makes it marked a "Game"
