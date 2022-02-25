@@ -17,6 +17,7 @@ from math import sin, cos, pi
 from random import randint, choice, random
 import sys
 
+from direct.gui.DirectGui import *
 from direct.gui.OnscreenText import OnscreenText
 from direct.interval.MetaInterval import Sequence
 from direct.interval.FunctionInterval import Wait, Func
@@ -80,14 +81,6 @@ def loadObject(tex=None, pos=LPoint3(0, 0), depth=SPRITE_POS, scale=1,
 
     return obj
 
-
-# Macro-like function used to reduce the amount to code needed to create the
-# on screen instructions
-def genLabelText(text, i):
-    return OnscreenText(text=text, parent=base.a2dTopLeft, pos=(0.07, -.06 * i - 0.1),
-                        fg=(1, 1, 1, 1), align=TextNode.ALeft, shadow=(0, 0, 0, 0.5), scale=.05)
-
-
 class AsteroidsDemo(ShowBase):
 
     def __init__(self):
@@ -96,15 +89,14 @@ class AsteroidsDemo(ShowBase):
         ShowBase.__init__(self)
 
         # This code puts the standard title and instruction text on screen
-        self.title = OnscreenText(text="Panda3D: Tutorial - Tasks",
-                                  parent=base.a2dBottomRight, scale=.07,
+        self.title = OnscreenText(text="Panda3D: Tutorial - Mobile",
+                                  parent=self.a2dBottomRight, scale=.07,
                                   align=TextNode.ARight, pos=(-0.1, 0.1),
                                   fg=(1, 1, 1, 1), shadow=(0, 0, 0, 0.5))
-        self.escapeText = genLabelText("ESC: Quit", 0)
-        self.leftkeyText = genLabelText("[Left Arrow]: Turn Left (CCW)", 1)
-        self.rightkeyText = genLabelText("[Right Arrow]: Turn Right (CW)", 2)
-        self.upkeyText = genLabelText("[Up Arrow]: Accelerate", 3)
-        self.spacekeyText = genLabelText("[Space Bar]: Fire", 4)
+
+        # Add our fire button to the screen
+        b = DirectButton(text="Fire", parent=self.a2dBottomLeft, 
+                         scale=.07, pos=(0.1, 0, 0.1), command=self.fire)
 
         # Disable default mouse-based camera control.  This is a method on the
         # ShowBase class from which we inherit.
@@ -139,7 +131,7 @@ class AsteroidsDemo(ShowBase):
         # The first argument is the function to be called, and the second
         # argument is the name for the task.  It returns a task object which
         # is passed to the function each frame.
-        self.gameTask = base.taskMgr.add(self.gameLoop, "gameLoop")
+        self.gameTask = self.taskMgr.add(self.gameLoop, "gameLoop")
 
         # Stores the time at which the next bullet may be fired.
         self.nextBullet = 0.0
@@ -380,7 +372,11 @@ class AsteroidsDemo(ShowBase):
         self.updatePos(self.ship, dt)
 
     # Creates a bullet and adds it to the bullet list
-    def fire(self, time):
+    def fire(self, time = 1) -> None:
+        """
+        Creates a bullet and adds it to the bullet list
+        """
+
         direction = DEG_TO_RAD * self.ship.getR()
         pos = self.ship.getPos()
         bullet = loadObject("bullet.png", scale=.2)  # Create the object
@@ -397,7 +393,17 @@ class AsteroidsDemo(ShowBase):
         # Finally, add the new bullet to the list
         self.bullets.append(bullet)
 
-# We now have everything we need. Make an instance of the class and start
-# 3D rendering
-demo = AsteroidsDemo()
-demo.run()
+def main() -> int:
+    """
+    Main entry point into the Astroids example application
+    """
+
+    # We now have everything we need. Make an instance of the class and start
+    # 3D rendering
+    demo = AsteroidsDemo()
+    demo.run()
+
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())
