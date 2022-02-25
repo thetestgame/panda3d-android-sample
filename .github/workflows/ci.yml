@@ -76,20 +76,8 @@ jobs:
       run: |
         java -jar ./tools/bundletool.jar build-apks --bundle ./dist/Asteroids-1.0.0_android.aab --output ./packages.apks
 
-    - name: Upload artifacts (Build)
-      uses: actions/upload-artifact@v2
-      with:
-        name: Build Directory
-        path: build/*
-
-    - name: Upload artifacts (dist)
-      uses: actions/upload-artifact@v2
-      with:
-        name: Dist Directory
-        path: dist/*
-        
     - name: Upload artifacts (APKS)
       uses: actions/upload-artifact@v2
       with:
-        name: Dist Directory
+        name: Build Apks
         path: ./*.apks 
