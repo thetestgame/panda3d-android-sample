@@ -5,14 +5,40 @@ on:
   workflow_dispatch:
     
 jobs:
-  build:
+  pylint:
+    name: Runs Pylint on the source code
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+    - name: Analysing the code with pylint
+      run: |
+        pylint $(git ls-files '*.py')
+  
+  build-android:
+    name: Builds the application for Android
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Setup Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: "3.8"
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin' # See 'Supported distributions' for available options
+        java-version: '17'
     - name: Install Panda3D
       run: |
         pip install https://buildbot.panda3d.org/downloads/68f0931f43284345893a90d5bba9ba5df8aa53bb/panda3d-1.11.0.dev2480-cp38-cp38-manylinux1_x86_64.whl
@@ -42,9 +68,13 @@ jobs:
         pip install google
         pip install protobuf
 
-    - name: Compile Sample Application
+    - name: Compile Sample Application AAB
       run: |
         python setup.py bdist_apps
+
+    - name: Compile Sample Application APK
+      run: |
+        java -jar ./tools/bundletool.jar build-apks --bundle ./Asteroids-1.0.0_android.aab --output ./packages.apks
 
     - name: Upload artifacts (Build)
       uses: actions/upload-artifact@v2
@@ -57,3 +87,9 @@ jobs:
       with:
         name: Dist Directory
         path: dist/*
+        
+    - name: Upload artifacts (APKS)
+      uses: actions/upload-artifact@v2
+      with:
+        name: Dist Directory
+        path: ./*.apks 
