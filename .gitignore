@@ -131,3 +131,12 @@ dmypy.json
 # Assets
 !models/*
 !textures/*
+
+# Built applications
+build/
+dist/
+*.aab
+*.apks
+
+# Keys
+*.pem
