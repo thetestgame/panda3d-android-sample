@@ -49,7 +49,7 @@ setup(
             # Required icon resolutions: 48x48, 72x72, 96x96, 144x144, 192x192
             # ..but make sure you author the logo in at least 512x512 since that
             # is the required resolution for the Play Store
-            'icons': {'*': 'logo.png'},
+            'icons': {'*': 'textures/logo.png'},
         },
 
         'bdist_apps': {
